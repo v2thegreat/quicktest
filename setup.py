@@ -10,5 +10,6 @@ setup(name='quicktest',
 	packages=['quicktest', 'tests'],
 	zip_safe=False,
 	install_requires=['matplotlib', 'tqdm'],
-        test_suite = 'quicktest.tests.quicktest_test'
+        setup_requires=['pytest-runner'],
+        tests_require=['pytest']
 	)
