@@ -10,6 +10,12 @@ except ImportError:
     warnings.warn("Matplotlib not Found", ImportWarning)
     __MATPLOTLIB_INSTALLED__ = False
 
+try:
+    from tqdm import tqdm
+    __TQDM_INSTALLED__ = True
+except ImportError:
+    warnings.warn("tqdm not Found", ImportWarning)
+    __TQDM_INSTALLED__ = False
 
 class quicktest:
     def __init__(self, iterable: Collection, *functions):
@@ -26,12 +32,25 @@ class quicktest:
         self._setFunctions(functions)
         self._setFunctionNames()
 
-    def run(self):
-        for func in self.functions:
-            temp = [self.__get_time(func, iterVal) for iterVal in self.iterable]
-            self.__speedTestRunTimes.append(temp)
+    def run(self, progressbar = True):
+        if progressbar:
+            self._checktqdm()
+            self.__run_with_progressbar()
+
+        else:
+            self.__run_without_progressbar()
 
         self.__setproperties()
+
+    def __run_with_progressbar(self):
+        for func in tqdm(self.functions):
+                temp = [self.__get_time(func, iterVal) for iterVal in self.iterable]
+                self.__speedTestRunTimes.append(temp)     
+
+    def __run_without_progressbar(self):
+        for func in self.functions:
+                temp = [self.__get_time(func, iterVal) for iterVal in self.iterable]
+                self.__speedTestRunTimes.append(temp)
 
     @property
     def fastest(self) -> Callable:
@@ -92,15 +111,24 @@ class quicktest:
             raise ImportError("Matplotlib not Installed")
 
     @staticmethod
+    def _checktqdm():
+        if not __TQDM_INSTALLED__:
+            raise ImportError("tqdm is not Installed")
+
+    @staticmethod
     def _mean(times):
         return sum(times)/len(times)
 
     @staticmethod
     def __get_time(func: Callable, iter_val: object) -> float:
         """
-		:Callable 	func:		Function that needs to be run to calculate its run time
-        :object 	iter_val: 	Iterator vales object that is passed as the parameter for the function
+        :Callable     func:        Function that needs to be run to calculate its run time
+        :object     iter_val:     Iterator vales object that is passed as the parameter for the function
         """
         t = clock()
         func(iter_val)
         return clock() - t
+
+if __name__ == '__main__':
+    t = quicktest(range(100000), dir, float)
+    t.run(False)
