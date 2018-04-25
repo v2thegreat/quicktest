@@ -28,18 +28,18 @@ class Unittests_quickTests(TestCase):
         if fastestbyTime < 0:
             self.fail("fastest time is negative")
 
-    # def test_FLAGS(self):
-    #     try:
-    #         quicktest.__MATPLOTLIB_INSTALLED__
+    def test_FLAGS(self):
+        try:
+            self.test._checkMatplotlib()
 
-    #     except AttributeError:
-    #         self.fail("__MATPLOTLIB_INSTALLED__ not set")
+        except ImportError:
+            self.fail("__MATPLOTLIB_INSTALLED__ not set")
 
-    #     try:
-    #         quicktest.__TQDM_INSTALLED__
+        try:
+            self.test._checktqdm()
 
-    #     except AttributeError:
-    #         self.fail("__TQDM_INSTALLED__ not set")
+        except ImportError:
+            self.fail("__TQDM_INSTALLED__ not set")
 
 if __name__ == '__main__':
     main()
