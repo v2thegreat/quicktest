@@ -31,7 +31,7 @@ class quicktest:
             temp = [self.__get_time(func, iterVal) for iterVal in self.iterable]
             self.__speedTestRunTimes.append(temp)
 
-        self._setProperties()
+        self.__setproperties()
 
     @property
     def fastest(self) -> Callable:
@@ -78,7 +78,7 @@ class quicktest:
         self.__meanLst.insert(smallestpos, temp)
         return self._fastestby
 
-    def _setProperties(self):
+    def __setproperties(self):
         self.fastest
         self.plot
 
@@ -98,15 +98,9 @@ class quicktest:
     @staticmethod
     def __get_time(func: Callable, iter_val: object) -> float:
         """
-
-        :type iter_val: object
+		:Callable 	func:		Function that needs to be run to calculate its run time
+        :object 	iter_val: 	Iterator vales object that is passed as the parameter for the function
         """
         t = clock()
         func(iter_val)
         return clock() - t
-
-if __name__ == '__main__':
-    t = quicktest(range(100), chr, dir)
-    t.run()
-    print(t._quicktest__meanLst)
-    print(t.fastestby)

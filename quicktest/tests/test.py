@@ -11,16 +11,21 @@ class Unittests_quickTests(TestCase):
         self.testItem1 = isPrime
         self.testItem2 = isPrime2
 
-    def test_quickTests(self):
-        t = quicktest.quicktest(range(10**4), self.testItem1, self.testItem2)
-        t.run()
+        self.test = quicktest.quicktest(range(10**4), self.testItem1, self.testItem2)
 
-        self.assertEqual(t.fastest, self.testItem2)
+    def test_quickTests(self):
+        self.test.run()
+
+        self.assertEqual(self.test.fastest, self.testItem2)
 
     def test_set_function_names(self):
-        t = quicktest.quicktest(range(10**4), self.testItem1, self.testItem2)
-        self.assertEqual(t._quicktest__function_names ,['isPrime', 'isPrime2'])
+        self.assertEqual(self.test._quicktest__function_names ,['isPrime', 'isPrime2'])
 
+    def test_fasterby(self):
+        self.test.run()
+        fastestbyTime = self.test.fastestby
+        if fastestbyTime < 0:
+            self.fail("fastest time is negative")
 
 if __name__ == '__main__':
     main()
