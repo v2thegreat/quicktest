@@ -46,10 +46,10 @@ class quicktest:
 
     def getPlot(self):
         self._checkMatplotlib()
-
+        plt.legend()
         for pos, runTimes in enumerate(self.__speedTestRunTimes):
             plt.plot(runTimes, label = self.__function_names[pos])
-
+        
         return plt
 
     def _setFunctionNames(self):

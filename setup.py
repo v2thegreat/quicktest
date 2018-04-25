@@ -1,7 +1,7 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(name='quicktest',
-	version='0.1',
+	version='0.2',
 	description='A dependency for milkCan to enable it to run speed tests',
 	url='https://github.com/v2thegreat/quicktest',
 	author='v2thegreat',
@@ -9,5 +9,6 @@ setup(name='quicktest',
 	license='MIT',
 	packages=['quicktest'],
 	zip_safe=False,
-	install_requires=['matplotlib']
+	install_requires=['matplotlib'],
+        test_suite = 'quicktest.tests.quicktest_test'
 	)
