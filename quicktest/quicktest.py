@@ -31,6 +31,8 @@ class quicktest:
             temp = [self.__get_time(func, iterVal) for iterVal in self.iterable]
             self.__speedTestRunTimes.append(temp)
 
+        self._setProperties()
+
     @property
     def fastest(self) -> Callable:
         self.__meanLst = self._get_all_mean_time
@@ -44,12 +46,14 @@ class quicktest:
         min_pos = self.__meanLst.index(min_time)
         return self.functions[min_pos]
 
-    def getPlot(self):
+    @property
+    def plot(self):
         self._checkMatplotlib()
-        plt.legend()
+
         for pos, runTimes in enumerate(self.__speedTestRunTimes):
             plt.plot(runTimes, label = self.__function_names[pos])
-        
+
+        plt.legend()
         return plt
 
     def _setFunctionNames(self):
@@ -62,6 +66,21 @@ class quicktest:
                 raise ValueError("{} is not a callable function".format(x))
 
             self.functions.append(x)
+
+    @property
+    def fastestby(self) -> float:
+        mintime = min(self.__meanLst)
+        smallestpos = self.__meanLst.index(mintime)
+        temp = self.__meanLst.pop(smallestpos)
+
+        self._fastestby = min(self.__meanLst) - mintime
+
+        self.__meanLst.insert(smallestpos, temp)
+        return self._fastestby
+
+    def _setProperties(self):
+        self.fastest
+        self.plot
 
     @property
     def _get_all_mean_time(self) -> List:
@@ -85,3 +104,9 @@ class quicktest:
         t = clock()
         func(iter_val)
         return clock() - t
+
+if __name__ == '__main__':
+    t = quicktest(range(100), chr, dir)
+    t.run()
+    print(t._quicktest__meanLst)
+    print(t.fastestby)
