@@ -30,13 +30,13 @@ class Unittests_quickTests(TestCase):
 
     def test_FLAGS(self):
         try:
-            self.test._checkMatplotlib()
+            self.test._quicktest__checkMatplotlib()
 
         except ImportError:
             self.fail("__MATPLOTLIB_INSTALLED__ not set")
-
+ 
         try:
-            self.test._checktqdm()
+            self.test._quicktest__check_tqdm_installed()
 
         except ImportError:
             self.fail("__TQDM_INSTALLED__ not set")
