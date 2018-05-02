@@ -28,6 +28,13 @@ class Unittests_quickTests(TestCase):
         if fastestbyTime < 0:
             self.fail("fastest time is negative")
 
+    def test_fastest_time(self):
+        try:
+            self.test._quicktest__meanLst
+            assert True
+        except ValueError:
+            assert False
+
     def test_FLAGS(self):
         try:
             self.test._quicktest__checkMatplotlib()
@@ -40,6 +47,10 @@ class Unittests_quickTests(TestCase):
 
         except ImportError:
             self.fail("__TQDM_INSTALLED__ not set")
+
+    def test_get_all_runtimes(self):
+        for x in range(len(self.test.functions)):
+            assert self.test.get_all_runtimes[self.test.functions[x]] == self.test._quicktest__speedTestRunTimes[x]
 
 if __name__ == '__main__':
     main()
