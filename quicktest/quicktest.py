@@ -3,6 +3,7 @@ from time import clock
 import warnings
 
 __MATPLOTLIB_INSTALLED__ = None
+__TQDM_INSTALLED__ = None
 
 #Setting import flags
 def import_matplotlib():
@@ -18,17 +19,24 @@ def import_matplotlib():
         warnings.warn("Matplotlib not Found", ImportWarning)
         __MATPLOTLIB_INSTALLED__ = False
 
-try:
-    from tqdm import tqdm
-    __TQDM_INSTALLED__ = True
-except ImportError:
-    warnings.warn("tqdm not Found", ImportWarning)
-    __TQDM_INSTALLED__ = False
+def import_tqdm():
+    """
+    Creating a seperate function to import tqdm and reduce import time
+    """
+    global __TQDM_INSTALLED__
+    try:
+        from tqdm import tqdm
+        __TQDM_INSTALLED__ = True
+        global tqdm
+    except ImportError:
+        warnings.warn("tqdm not Found", ImportWarning)
+        __TQDM_INSTALLED__ = False
 
 
 class quicktest:
     def __init__(self, iterable: Collection, *functions):
-        """A simple python library which compares runtimes for different functions
+        """
+        A simple python library which compares runtimes for different functions
 
         Args:
             iterable    (:Collection: of objects): A collection of parameters that functions are meant to take as input
@@ -47,7 +55,8 @@ class quicktest:
         self._setFunctionNames()
 
     def _setFunctions(self, functions):
-        """Checks if functions are callable and addsm to a list for funcitons. If not, raises ValueError
+        """
+        Checks if functions are callable and addsm to a list for funcitons. If not, raises ValueError
         
         Args:
             functions   (:obj: Callable): A collection of callable functions that take values of iterable as parameters
@@ -59,7 +68,9 @@ class quicktest:
             self.functions.append(x)
 
     def _setFunctionNames(self):
-        """Extracts names of functions and savesm for later"""
+        """
+        Extracts names of functions and savesm for later
+        """
         for func in self.functions:
             self.__function_names.append(func.__name__)
 
@@ -79,18 +90,26 @@ class quicktest:
         self.__testran = True
 
     def __run_with_progressbar(self):
+        """
+        running tests with progressbar
+        """
         for func in tqdm(self.functions):
                 temp = [self.__get_time(func, iterVal) for iterVal in self.iterable]
                 self.__speedTestRunTimes.append(temp)
 
     def __run_without_progressbar(self):
+        """
+        running tests without progressbar
+        """
         for func in self.functions:
                 temp = [self.__get_time(func, iterVal) for iterVal in self.iterable]
                 self.__speedTestRunTimes.append(temp)
 
     @property
     def fastest(self) -> Callable:
-        """gets the fastest function"""
+        """
+        gets the fastest function
+        """
         self.__runtests()
 
         min_time = min(self.__meanLst)
@@ -101,7 +120,9 @@ class quicktest:
 
     @property
     def fastest_time(self) -> float:
-        """gets runtime for fastest function"""
+        """
+        gets runtime for fastest function
+        """
         try:
             return min(self.__meanLst)
 
@@ -127,7 +148,6 @@ class quicktest:
         returns a plot object which has all function runtimes plotted
         sets the plot's legend to True
         """
-
         self.__runtests()
         self.__checkMatplotlib()
 
@@ -139,7 +159,9 @@ class quicktest:
 
     @property
     def get_all_runtimes(self) -> dict:
-        """returns all the runtimes for all the functions as a dictionary"""
+        """
+        returns all the runtimes for all the functions as a dictionary
+        """
         self.__runtests()
         self._all_runtimes = {}
         for x in range(len(self.__speedTestRunTimes)):
@@ -147,6 +169,9 @@ class quicktest:
         return self._all_runtimes
 
     def __runtests(self):
+        """
+        function to run the tests if they haven't been run before
+        """
         if not self.__testran:
             self.run()
             self.__testran = True
@@ -154,6 +179,9 @@ class quicktest:
 
     @property
     def _get_all_mean_time(self) -> List:
+        """
+        return a list of a mean for all the runtimes
+        """
         return [self._mean(times) for times in self.__speedTestRunTimes]
 
     @staticmethod
@@ -164,7 +192,6 @@ class quicktest:
         import_matplotlib()
         try:
             if not __MATPLOTLIB_INSTALLED__:
-                print("Error")
                 raise ImportError("Matplotlib not Installed")
         except ValueError:
             self.__checkMatplotlib()
@@ -174,8 +201,12 @@ class quicktest:
         """
         function to check if tqdm is installed
         """
-        if not __TQDM_INSTALLED__:
-            raise ImportError("tqdm is not Installed")
+        import_tqdm()
+        try:
+            if not __TQDM_INSTALLED__:
+                raise ImportError("tqdm is not Installed")
+        except ValueError:
+            self.__check_tqdm_installed()
 
     @staticmethod
     def _mean(times):
