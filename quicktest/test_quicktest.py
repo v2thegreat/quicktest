@@ -1,5 +1,4 @@
 import quicktest
-#from quicktest import __MATPLOTLIB_INSTALLED__, __TQDM_INSTALLED__
 from unittest import TestCase
 from unittest import main
 
@@ -7,7 +6,7 @@ class Unittests_quickTests(TestCase):
     """docstring for Test_quickTests"""
 
     def setUp(self):
-        from test_lib.primetest import isPrime, isPrime2
+        from .primetest import isPrime, isPrime2
         self.testItem1 = isPrime
         self.testItem2 = isPrime2
 
