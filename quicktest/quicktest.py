@@ -93,9 +93,15 @@ class quicktest:
         """
         running tests with progressbar
         """
-        for func in tqdm(self.functions):
-                temp = [self.__get_time(func, iterVal) for iterVal in self.iterable]
-                self.__speedTestRunTimes.append(temp)
+        for func in self.functions:
+            temp = []
+            progressbar = tqdm(self.iterable, desc = func.__name__)
+
+            for iterVal in self.iterable:
+                temp.append(self.__get_time(func, iterVal))
+                progressbar.update()
+
+            self.__speedTestRunTimes.append(temp)
 
     def __run_without_progressbar(self):
         """
@@ -218,15 +224,14 @@ class quicktest:
     @staticmethod
     def __get_time(func: Callable, iter_val: object) -> float:
         """
-        :Callable     func:        Function that needs to be run to calculate its run time
-        :object     iter_val:     Iterator vales object that is passed as parameter for function
+        :Callable       func:           Function that needs to be run to calculate its run time
+        :object         iter_val:       Iterator vales object that is passed as parameter for function
         """
         t = clock()
         func(iter_val)
         return clock() - t
 
-
 if __name__ == '__main__':
     t = quicktest(range(100000), dir, float)
-    help(t)
+    t.run()
     # print(t.fastestby)
