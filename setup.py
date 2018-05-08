@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='quicktest',
-	version='0.5',
+	version='0.6',
 	description='A dependency for milkCan to enable it to run speed tests',
 	url='https://github.com/v2thegreat/quicktest',
 	author='v2thegreat',
