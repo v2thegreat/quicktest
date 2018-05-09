@@ -1,6 +1,9 @@
 [
-  "tests/test_quicktest.py::Unittests_quickTests::test_FLAGS",
-  "tests/test_quicktest.py::Unittests_quickTests::test_fasterby",
-  "tests/test_quicktest.py::Unittests_quickTests::test_quickTests",
-  "tests/test_quicktest.py::Unittests_quickTests::test_set_function_names"
+  "quicktest/test_quicktest.py::Unittests_quickTests::test_FLAGS",
+  "quicktest/test_quicktest.py::Unittests_quickTests::test_checksame",
+  "quicktest/test_quicktest.py::Unittests_quickTests::test_fasterby",
+  "quicktest/test_quicktest.py::Unittests_quickTests::test_fastest_time",
+  "quicktest/test_quicktest.py::Unittests_quickTests::test_get_all_runtimes",
+  "quicktest/test_quicktest.py::Unittests_quickTests::test_quickTests",
+  "quicktest/test_quicktest.py::Unittests_quickTests::test_set_function_names"
 ]

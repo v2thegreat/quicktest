@@ -34,6 +34,9 @@ class Unittests_quickTests(TestCase):
         except ValueError:
             assert False
 
+    def test_checksame(self):
+        assert self.test.checksame
+
     def test_FLAGS(self):
         try:
             self.test._quicktest__checkMatplotlib()
