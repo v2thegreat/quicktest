@@ -74,6 +74,28 @@ class quicktest:
         for func in self.functions:
             self.__function_names.append(func.__name__)
 
+    def checkSame(self):
+        """
+        Checks if all of functions return same value over parameters passed
+
+        Collects the output for all the functions for an iterator
+
+        returns True if all output are equal to the first function's output, false otherwise
+        """
+
+        check = True
+
+        for iter in self.iterable:
+            temp = [func(iter) for func in self.functions]
+            
+            for val in temp[1:]:
+                check *= val == temp[0]
+
+            if not check:
+                return False
+
+        return True
+
     def run(self, progressbar = False):
         """Runs functions with given parameters to get average runtime
 
@@ -114,7 +136,7 @@ class quicktest:
     @property
     def fastest(self) -> Callable:
         """
-        gets the fastest function
+        gets fastest function
         """
         self.__runtests()
 
@@ -139,7 +161,7 @@ class quicktest:
     @property
     def fastestby(self) -> float:
         """
-        returns how much faster the fastest function is compared to the second fastest 
+        returns how much faster fastest function is compared to second fastest 
         """
         self.__runtests()                                           #Running this in case tests have not been run before
         smallestpos = self.__meanLst.index(self.fastest_time)       #Getting position of fastest one so that it can be skipped later
@@ -152,7 +174,7 @@ class quicktest:
     def plot(self) -> object:
         """
         returns a plot object which has all function runtimes plotted
-        sets the plot's legend to True
+        sets plot's legend to True
         """
         self.__runtests()
         self.__checkMatplotlib()
@@ -166,7 +188,7 @@ class quicktest:
     @property
     def get_all_runtimes(self) -> dict:
         """
-        returns all the runtimes for all the functions as a dictionary
+        returns all runtimes for all functions as a dictionary
         """
         self.__runtests()
         self._all_runtimes = {}
@@ -176,7 +198,7 @@ class quicktest:
 
     def __runtests(self):
         """
-        function to run the tests if they haven't been run before
+        function to run tests if they haven't been run before
         """
         if not self.__testran:
             self.run()
@@ -186,7 +208,7 @@ class quicktest:
     @property
     def _get_all_mean_time(self) -> List:
         """
-        return a list of a mean for all the runtimes
+        return a list of a mean for all runtimes
         """
         return [self._mean(times) for times in self.__speedTestRunTimes]
 
