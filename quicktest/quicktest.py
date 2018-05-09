@@ -74,7 +74,7 @@ class quicktest:
         for func in self.functions:
             self.__function_names.append(func.__name__)
 
-    def checkSame(self):
+    def checksame(self):
         """
         Checks if all of functions return same value over parameters passed
 
