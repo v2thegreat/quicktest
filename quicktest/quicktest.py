@@ -161,14 +161,14 @@ class quicktest:
     @property
     def fastestby(self) -> float:
         """
-        returns how much faster fastest function is compared to second fastest 
+        returns by how much the fastest function is faster by compared to the second fastest function
         """
         self.__runtests()                                           #Running this in case tests have not been run before
         smallestpos = self.__meanLst.index(self.fastest_time)       #Getting position of fastest one so that it can be skipped later
 
         secondfastest = min(self.__meanLst[:smallestpos] + self.__meanLst[smallestpos+1:])  #getting second smallest one by skipping fastest
         self._fastestby =  (secondfastest - self.fastest_time)/secondfastest    #calculate how much faster it is
-        return self._fastestby*100
+        return self._fastestby
 
     @property
     def plot(self) -> object:
@@ -195,6 +195,17 @@ class quicktest:
         for x in range(len(self.__speedTestRunTimes)):
             self._all_runtimes[self.functions[x]] = self.__speedTestRunTimes[x]
         return self._all_runtimes
+
+    @property
+    def get_all_mean_times(self) -> dict:
+        """
+        returns all mean runtimes for all functions as a dictionary
+        """
+        self.__runtests()
+        self._all_times = {}
+        for pos in range(self.functions.__len__()):
+            self._all_times[self.functions[pos]] = self.__meanLst[pos]
+        return self._all_times
 
     def __runtests(self):
         """
@@ -249,9 +260,15 @@ class quicktest:
         :Callable       func:           Function that needs to be run to calculate its run time
         :object         iter_val:       Iterator vales object that is passed as parameter for function
         """
-        t = clock()
-        func(iter_val)
-        return clock() - t
+        try:
+            t = clock()
+            func(iter_val)
+            return clock() - t
+
+        except TypeError:               #Creating this incase the function does not take any parameters at all
+            t = clock()
+            func()
+            return clock() - t
 
 if __name__ == '__main__':
     t = quicktest(range(100000), dir, float)
